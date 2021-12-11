@@ -1,0 +1,15 @@
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/mcJollibee3
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/mcJollibee3.deps.json
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/mcJollibee3.runtimeconfig.json
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/mcJollibee3.dll
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/ref/mcJollibee3.dll
+/home/jay/Projects/mcJollibee3/bin/Debug/net6.0/mcJollibee3.pdb
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.csproj.AssemblyReference.cache
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.GeneratedMSBuildEditorConfig.editorconfig
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.AssemblyInfoInputs.cache
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.AssemblyInfo.cs
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.csproj.CoreCompileInputs.cache
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.dll
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/ref/mcJollibee3.dll
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.pdb
+/home/jay/Projects/mcJollibee3/obj/Debug/net6.0/mcJollibee3.genruntimeconfig.cache
