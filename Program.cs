@@ -388,16 +388,21 @@ namespace mcJollibee3
 
 
         static void addOrder() {
-            int counter;
-            bool success_addOrder = false, done_addOrder = false;
-            userChoice = "";
+            int counter, displayAmount;
+            bool done_addOrder = false;
+            String displayItem;
 
             while (done_addOrder == false) {
+                bool success_addOrder = false;
+                userChoice = "";
 
                 Console.SetCursorPosition(5, 25);
-                Console.Write("To add items, enter its code and amount. Example: frs, 2                              ");
+                Random random = new Random();
+                displayAmount = random.Next(0, 4);
+                displayItem = itemNames[displayAmount];
+                Console.Write($"To add items, enter its code and the desired amount. Example: {displayItem}, {displayAmount}                              ");
                 Console.SetCursorPosition(5, 26);
-                Console.Write("Type 'e' once finished.");
+                Console.Write("Type e once finished.");
 
                 userChoice = typeChoice(errorEnable: false);
                 String[] array_userChoice = splitString(userChoice);
@@ -405,30 +410,36 @@ namespace mcJollibee3
                 if (userChoice == "e") {
                     success(5, 32, "");
                     done_addOrder = true;
-                    break;
+                    continue;
+                }
+
+                if (userChoice == "") 
+                    {
+                        error(5, 32);
+                        continue;
+                    }
+
+                if (array_userChoice.Length != 2)
+                {
+                    error(5,32);
+                    continue;
                 }
 
                 for (counter=0; counter < 5; counter++) {
-                    if (array_userChoice[0] == itemCodes[counter])
+                    if (array_userChoice[0] == itemCodes[counter] && array_userChoice[1] != "")
                     {    
                         orderQuantities[counter] = Int32.Parse(array_userChoice[1]);
-                        Console.SetCursorPosition(5,0);
-                        //Displays the template of the main screen which contains the menu list and current receipt.
-                        Console.Write(mainScreen);
-                        //Overlays the values of the orders on top of the main screen's template.
-                        updateOrders();
+                        display_mainScreen();
                         success_addOrder = true;
                         success(5, 32, $"Successfully added {array_userChoice[1]} {itemNames[counter]}");
                         break;
                     }
-                }
 
-                if (userChoice == "") {
-                    error(5, 32);
-                }
+                    if (success_addOrder == false) 
+                    {
+                        error(5,32, $"Item code {array_userChoice[0]} is not found, please try again.");
+                    }
 
-                else if (success_addOrder == false) {
-                    error(5,32, $"Item code '{array_userChoice[0]}' is not found, please try again.");
                 }
             }
         }
@@ -446,6 +457,16 @@ namespace mcJollibee3
         
         static void clearOrder() {
             
+        }
+
+
+
+        static void display_mainScreen() {
+            Console.SetCursorPosition(5,0);
+            //Displays the template of the main screen which contains the menu list and current receipt.
+            Console.Write(mainScreen);
+            //Overlays the values of the orders on top of the main screen's template.
+            updateOrders();
         }
 
         
