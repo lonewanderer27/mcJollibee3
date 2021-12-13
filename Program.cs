@@ -387,22 +387,37 @@ namespace mcJollibee3
 
 
 
+
+        static void help_addOrder() {
+            //Displays an instruction on how to add orders
+            int displayAmount, random_item;
+            String displayItemCode, displayItemName;
+
+            Random random = new Random();
+            displayAmount = random.Next(1, 10);
+            random_item = random.Next(0, 4);
+            displayItemCode = itemCodes[random_item];
+            displayItemName = itemNames[random_item];
+            Console.SetCursorPosition(5, 26);
+                Console.Write($"For example, to add {displayAmount} {displayItemName}, type: '{displayItemCode}, {displayAmount}'");
+        }
+
+
+
         static void addOrder() {
-            int counter, displayAmount;
+            int counter;
             bool done_addOrder = false;
-            String displayItem;
+
+            help_addOrder();
 
             while (done_addOrder == false) {
                 bool success_addOrder = false;
-                userChoice = "";
+                userChoice = ""; 
 
                 Console.SetCursorPosition(5, 25);
-                Random random = new Random();
-                displayAmount = random.Next(0, 4);
-                displayItem = itemNames[displayAmount];
-                Console.Write($"To add items, enter its code and the desired amount. Example: {displayItem}, {displayAmount}                              ");
-                Console.SetCursorPosition(5, 26);
-                Console.Write("Type e once finished.");
+                Console.Write("To add items, enter its code, comma then the desired amount. Press enter                            ");
+                Console.SetCursorPosition(5, 27);
+                Console.Write("Enter 'e' once you're done ordering all.                                                            ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 String[] array_userChoice = splitString(userChoice);
@@ -410,7 +425,7 @@ namespace mcJollibee3
                 if (userChoice == "e") {
                     success(5, 32, "");
                     done_addOrder = true;
-                    continue;
+                    break;
                 }
 
                 if (userChoice == "") 
@@ -432,12 +447,14 @@ namespace mcJollibee3
                         display_mainScreen();
                         success_addOrder = true;
                         success(5, 32, $"Successfully added {array_userChoice[1]} {itemNames[counter]}");
+                        array_userChoice[0] = "";
+                        array_userChoice[1] = "";
                         break;
                     }
 
                     if (success_addOrder == false) 
                     {
-                        error(5,32, $"Item code {array_userChoice[0]} is not found, please try again.");
+                        error(5,32, $"Item code '{array_userChoice[0]}' is not found, please try again.");
                     }
 
                 }
