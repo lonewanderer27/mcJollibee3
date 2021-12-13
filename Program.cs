@@ -117,6 +117,7 @@ namespace mcJollibee3
 
         static Double[] itemPrices =  {100.00, 50.00, 45.00, 30.00, 20.00};
         static String[] itemCodes = {"cwr", "bgr", "frs", "sde", "sds"};
+        static String[] itemNames = {"Chicken with Rice", "Burger", "Fries", "Sundae", "Softdrinks"};
         static Double[] totalItemPrices = new Double[5];
         static int[] orderQuantities = new int[5];
         static int totalQty, num_userChoice;
@@ -261,7 +262,7 @@ namespace mcJollibee3
             int run = 1;
             String currentUser = "";
             while (currentUser == "") {
-                Console.SetCursorPosition(53,30);
+                Console.SetCursorPosition(54,30);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("What is your name? ");
                 currentUser = Console.ReadLine();
@@ -365,34 +366,6 @@ namespace mcJollibee3
 
 
 
-        static string determineItemName(String itemCode) {
-            string itemName = "";
-
-            if (itemCode == "cwr") {
-                itemName = "Chicken with Rice";
-            }
-
-            if (itemCode == "bgr") {
-                itemName = "Burger";
-            }
-
-            if (itemCode == "frs") {
-                itemName = "Fries";
-            }
-
-            if (itemCode == "sde") {
-                itemName = "Sundae";
-            }
-
-            if (itemCode == "sds") {
-                itemName = "Softdrinks";
-            }
-
-            return itemName;
-        }
-
-
-
         static void welcomeScreen() {
             Console.Clear();
             //column, row
@@ -418,7 +391,9 @@ namespace mcJollibee3
             int counter;
             bool success_addOrder = false, done_addOrder = false;
             userChoice = "";
+
             while (done_addOrder == false) {
+
                 Console.SetCursorPosition(5, 25);
                 Console.Write("To add items, enter its code and amount. Example: frs, 2                              ");
                 Console.SetCursorPosition(5, 26);
@@ -436,20 +411,24 @@ namespace mcJollibee3
                 for (counter=0; counter < 5; counter++) {
                     if (array_userChoice[0] == itemCodes[counter])
                     {    
-                        totalItemPrices[counter] += (itemPrices[counter] * Int32.Parse(array_userChoice[1]));
+                        orderQuantities[counter] = Int32.Parse(array_userChoice[1]);
+                        Console.SetCursorPosition(5,0);
+                        //Displays the template of the main screen which contains the menu list and current receipt.
+                        Console.Write(mainScreen);
+                        //Overlays the values of the orders on top of the main screen's template.
+                        updateOrders();
                         success_addOrder = true;
-                        done_addOrder = true;
-                        success(5, 32, $"Successfully added ");
+                        success(5, 32, $"Successfully added {array_userChoice[1]} {itemNames[counter]}");
                         break;
                     }
                 }
 
                 if (userChoice == "") {
-                    error(5, 33);
+                    error(5, 32);
                 }
 
                 else if (success_addOrder == false) {
-                    error(5,33, $"Item code '{array_userChoice[0]}' is not found, please try again.");
+                    error(5,32, $"Item code '{array_userChoice[0]}' is not found, please try again.");
                 }
             }
         }
@@ -473,8 +452,8 @@ namespace mcJollibee3
 
         static void Main(string[] args)
         {
-            
-                welcomeScreen();
+            welcomeScreen();
+            while (program_execution_count < 5) {
                 program_execution_count += 1;
                 //column, row
                 Console.SetCursorPosition(5,0);
@@ -499,13 +478,11 @@ namespace mcJollibee3
                     
                 }
                 else {
-                    error(5, 32, "Invalid number choice, please try again.");
+                    error(5, 32, errorMessage: "Invalid number choice, please try again.");
                 }
 
-            
+            }
         }
-
-
         
     }
 }
