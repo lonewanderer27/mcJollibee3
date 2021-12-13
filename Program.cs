@@ -63,11 +63,11 @@ namespace mcJollibee3
                                                                                                                    |        Total with VAT:    ₱             |
                                                                                                                    |                                         |   
                                                                                                                    +-----------------------------------------+
-                                                                                                                     
-
-
         ";
         
+        static String addMenu = @"
+    To add an item, enter its code shown above                          
+        ";
 
 
         /* 
@@ -138,13 +138,10 @@ namespace mcJollibee3
         }
 
         
-        
-
-
         static void updateOrders() {
 
             //Displays the Qty of the dish if it's not 0
-            int counter, qty, row = 20;
+            int counter, row = 20;
             
             for (counter=0; counter < 5;counter++) {
                 Console.SetCursorPosition(121, row);
@@ -222,6 +219,31 @@ namespace mcJollibee3
         }
 
 
+        static String getcurrentUser(String currentUser) {
+            int run = 1;
+            while (currentUser == "") {
+                Console.SetCursorPosition(53,30);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("What is your name? ");
+                currentUser = Console.ReadLine();
+                if (run != 0) {
+                    error(53, 32);
+                }
+                run++;
+            }
+            return currentUser;
+        }
+
+
+
+        static void error(int col, int row) {
+            Console.SetCursorPosition(col, row);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Error. Please try again");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
 
         
         static void welcomeScreen() {
@@ -230,14 +252,13 @@ namespace mcJollibee3
             Console.SetCursorPosition(15,10);
             Console.Write(banner);
 
-            Console.SetCursorPosition(53,30);
+            Console.SetCursorPosition(53,27);
             Console.Write("For a better experience, please use a fixed width font ");
             Console.ReadLine();
 
             if (program_execution_count == 0) {
-                Console.SetCursorPosition(53,35);
-                Console.Write("What is your name? ");
-                currentUser = Console.ReadLine();
+                
+                currentUser = getcurrentUser(Console.ReadLine());
             }
             
 
@@ -245,42 +266,90 @@ namespace mcJollibee3
         }
 
 
-        static void choicesMenu(string userChoice) {
-            userChoice = userChoice.ToLower();
-            switch (userChoice)
-            {
-                case "": {
-                    Console.SetCursorPosition(5, 25);
-                    Console.Write("OPTIONS:     [1]Add      [2]Cancel Orders    [3]Payment      [4]Exit");
 
-                    Console.SetCursorPosition(5, 30);
-                    Console.Write("Type your choice: ");
-                    Console.ReadLine();
 
-                    break;
+        static void addOrder() {
+            Console.Write("addOrder got triggered");
+            int run  = 1;
+            while (userChoice == "") {
+                Console.SetCursorPosition(5, 25);
+                Console.Write(addMenu);
+                Console.SetCursorPosition(5, 30);
+                Console.Write("Type your choice: ");
+                userChoice = Console.ReadLine();
+                if (run != 0) {
+                    error(5, 32);
                 }
+                run++;
             }
+            
+        }
 
+        static void cancelOrder() {
+            
+        }
+
+
+        static void payment() {
+
+        }
+
+        
+        static void clearOrder() {
+            
+        }
+
+
+
+        static String choicesMenu() {
+            int run=1;
+            while (userChoice == "") {
+                userChoice = userChoice.ToLower();
+                Console.SetCursorPosition(5, 25);
+                Console.Write("OPTIONS:     [1]Add      [2]Cancel Orders    [3]Payment      [4]Exit");
+                Console.SetCursorPosition(5, 30);
+                Console.Write("Type your choice: ");
+                userChoice = Console.ReadLine();
+                if (run != 0) {
+                    error(5, 32);
+                }
+                run++;
+            }
+            return userChoice;
         }
 
         
 
         static void Main(string[] args)
         {
-            welcomeScreen();
-            program_execution_count += 1;
-            //column, row
-            Console.SetCursorPosition(5,0);
-            //Displays the template of the main screen which contains the menu list and current receipt.
-            Console.Write(mainScreen);
-            //Overlays the values of the orders on top of the main screen's template.
-            updateOrders();
+            
+                welcomeScreen();
+                program_execution_count += 1;
+                //column, row
+                Console.SetCursorPosition(5,0);
+                //Displays the template of the main screen which contains the menu list and current receipt.
+                Console.Write(mainScreen);
+                //Overlays the values of the orders on top of the main screen's template.
+                updateOrders();
 
-            choicesMenu(userChoice);
+                userChoice = choicesMenu();
+                if (userChoice == "1" || userChoice == "add") {
+                    addOrder();
+                }
+                else if (userChoice == "2" || userChoice == "cancel") {
+                    cancelOrder();
+                }
+                else if (userChoice == "3" || userChoice == "payment") {
+                    payment();
+                }
+                else if (userChoice == "4" || userChoice == "exit") {
 
+                }
+                else {
+                    
+                }
 
-
-            Console.SetCursorPosition(5,60);
+            
         }
 
 
