@@ -194,10 +194,11 @@ namespace mcJollibee3
 
         //Computes the sub total price of all items
         static void computesubtotalPrice() {
-            int counter;
-            for (counter=0;counter < 5;counter++) {
-                subtotalPrice += totalItemPrices[counter];
-            }
+            // int counter;
+            // for (counter=0;counter < 5;counter++) {
+            //     subtotalPrice += totalItemPrices[counter];
+            // }
+            subtotalPrice = totalItemPrices[0] + totalItemPrices[1] + totalItemPrices[2] + totalItemPrices[3] + totalItemPrices[4];
         }
         
         
@@ -360,13 +361,6 @@ namespace mcJollibee3
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
-                
-                int num_cancelOrder = Int32.Parse(array_userChoice[1]);
-                if (num_cancelOrder < 0 || num_cancelOrder == 0)
-                {
-                    error(5, 32, errorMessage:"You entered invalid number.");
-                    continue;
-                } 
 
                 if (userChoice == "e") {
                     success(5, 32);
@@ -379,6 +373,13 @@ namespace mcJollibee3
                     error(5, 32);
                     continue;
                 }
+                
+                int num_cancelOrder = Int32.Parse(array_userChoice[1]);
+                if (num_cancelOrder < 0 || num_cancelOrder == 0)
+                {
+                    error(5, 32, errorMessage:"You entered invalid number.");
+                    continue;
+                } 
 
                 if (array_userChoice.Length != 2)
                 {
@@ -443,25 +444,25 @@ namespace mcJollibee3
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
                 
+                if (userChoice == "e") {
+                    success(5, 32);
+                    done_cancelOrder = true;
+                    continue;
+                }
+                
+                if (userChoice == "") 
+                {
+                    error(5, 32);
+                    continue;
+                }
+                
                 int num_cancelOrder = Int32.Parse(array_userChoice[1]);
                 if (num_cancelOrder < 0 || num_cancelOrder == 0)    //breaks the loop if the user entered a negative number
                 {
                     error(5, 32, errorMessage:"You entered invalid number.");
                     continue;
                 }
-
-                if (userChoice == "e") {
-                    success(5, 32);
-                    done_cancelOrder = true;
-                    continue;
-                }
-
-                if (userChoice == "") 
-                {
-                    error(5, 32);
-                    continue;
-                }
-
+                
                 if (array_userChoice.Length != 2)
                 {
                     error(5,32);
@@ -507,7 +508,7 @@ namespace mcJollibee3
             displayItemCode = itemCodes[random_item];
             displayItemName = itemNames[random_item];
             Console.SetCursorPosition(5, 26);
-            Console.Write($"For example, to cancel {displayAmount} of {displayItemName}(s), type: '{displayItemCode}, {displayAmount}'");
+            Console.Write($"For example, to cancel {displayAmount} {displayItemName}(s), type: '{displayItemCode}, {displayAmount}'");
         }
 
 
