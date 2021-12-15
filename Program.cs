@@ -669,13 +669,15 @@ namespace mcJollibee3
 
         static void notice_fullscreen()
         {
-            Console.Write("Tip: For better experience, please use a fixed width font ");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("Warning: Please maximize the window before continuing...");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.Write("Press Enter to continue.");
+            Console.SetCursorPosition(2, 2);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Tip: For better experience, use a fixed width font.");
+            Console.SetCursorPosition(2, 4);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Warning: Maximize the window before continuing...");
+            Console.SetCursorPosition(2, 10);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Press Enter to continue. ");
             Console.ReadLine();
         }
         
