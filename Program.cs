@@ -297,7 +297,7 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5,30);    //it feels weird that C# doesn't support multiplying strings using integers, what a shame tbh...
                 Console.Write("                                                                           ");   //clears whatever the user typed in before
                 Console.SetCursorPosition(5,30);
-                Console.Write("Type your choice: ");
+                Console.Write($"{currentUser} type your choice: ");
                 userChoice = Console.ReadLine();
                 if (run != 1) {
                         if (errorEnable == true) {
@@ -310,6 +310,7 @@ namespace mcJollibee3
         }
 
         
+        
         static int typeNum() {
             int verified_typeNum_input;
             String userNum;
@@ -319,7 +320,7 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5,30);
                 Console.Write("                                                                           ");   //clears whatever the user typed in before
                 Console.SetCursorPosition(5,30);
-                Console.Write("Type your choice: ");
+                Console.Write($"{currentUser} type your choice: ");
                 userNum = Console.ReadLine();
                 success_typeNum = Int32.TryParse(userNum, out verified_typeNum_input);
                 if (success_typeNum) {
@@ -343,6 +344,7 @@ namespace mcJollibee3
         }
 
 
+        
         static void addOrder() {
             bool done_addOrder = false;
 
@@ -373,19 +375,19 @@ namespace mcJollibee3
                     error(5, 32);
                     continue;
                 }
-                
-                int num_cancelOrder = Int32.Parse(array_userChoice[1]);
-                if (num_cancelOrder < 0 || num_cancelOrder == 0)
-                {
-                    error(5, 32, errorMessage:"You entered invalid number.");
-                    continue;
-                } 
 
                 if (array_userChoice.Length != 2)
                 {
                     error(5,32);
                     continue;
                 }
+                
+                int num_addOrder = Int32.Parse(array_userChoice[1]);
+                if (num_addOrder < 0 || num_addOrder == 0)
+                {
+                    error(5, 32, errorMessage:"You entered invalid number.");
+                    continue;
+                } 
 
                 int counter;
                 for (counter=0; counter < 5; counter++) {
@@ -424,6 +426,7 @@ namespace mcJollibee3
             Console.Write($"For example, to add {displayAmount} {displayItemName}, type: '{displayItemCode}, {displayAmount}'");
         }
             
+        
 
         static void cancelOrder() {
             bool done_cancelOrder = false;
@@ -455,6 +458,12 @@ namespace mcJollibee3
                     error(5, 32);
                     continue;
                 }
+
+                if (array_userChoice.Length != 2)
+                {
+                    error(5,32);
+                    continue;
+                }
                 
                 int num_cancelOrder = Int32.Parse(array_userChoice[1]);
                 if (num_cancelOrder < 0 || num_cancelOrder == 0)    //breaks the loop if the user entered a negative number
@@ -462,23 +471,18 @@ namespace mcJollibee3
                     error(5, 32, errorMessage:"You entered invalid number.");
                     continue;
                 }
-                
-                if (array_userChoice.Length != 2)
-                {
-                    error(5,32);
-                    continue;
-                }
 
                 int counter;
                 for (counter=0; counter < 5; counter++) {
-                    if (Int32.Parse(array_userChoice[1]) > orderQuantities[counter])
-                    {
-                        error(5, 32, "You cancelled amount of items higher than you have!");
-                        break;
-                    }
-                    
+
                     if (array_userChoice[0] == itemCodes[counter] && success_cancelOrder == false)
                     {    
+                        if (num_cancelOrder > orderQuantities[counter])
+                        {
+                            error(5, 32, "You cancelled amount of items higher than you have!");
+                            break;
+                        }
+                        
                         orderQuantities[counter] -= Int32.Parse(array_userChoice[1]);
                         display_mainScreen();
                         success(5, 32, $"Successfully removed {array_userChoice[1]} {itemNames[counter]}");
@@ -495,8 +499,7 @@ namespace mcJollibee3
                 }
             }
         }
-        
-        
+
         static void help_cancelOrder() {
             //Displays an instruction on how to cancel orders
             int displayAmount, random_item;
@@ -512,32 +515,44 @@ namespace mcJollibee3
         }
 
 
+        
         static void payment() {
 
         }
 
         
-        static void clearOrder() {
+        
+        static void newCustomer() {
             
         }
+
+        static void notice_fullscreen()
+        {
+            Console.Write("Tip: For better experience, please use a fixed width font ");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Warning: ");
+            Console.Write("Please maximize the window before continuing...");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("press Enter to continue");
+            Console.ReadLine();
+        }
         
-        
-        static String getcurrentUser()
+        static void getcurrentUser()
         {
             int run = 1;
-            while (currentUser == "") {
-                Console.SetCursorPosition(54,30);
+            while (currentUser == "Customer") {
+                Console.SetCursorPosition(65,30);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("What is your name? ");
                 currentUser = Console.ReadLine();
-                if (run != 0) {
+                if (run != 1) {
                     error(53, 32, "You typed invalid name, please try again");
                 }
                 run++;
             }
-            return currentUser;
         }
-
         
         static void welcomeScreen() {
             Console.Clear();
@@ -545,13 +560,13 @@ namespace mcJollibee3
             Console.SetCursorPosition(15,10);
             Console.Write(banner);
 
-            Console.SetCursorPosition(54,27);
-            Console.Write("For better experience, please use a fixed width font ");
-            Console.ReadLine();
-
-            if (program_execution_count == 0) {
-                currentUser = getcurrentUser();
+            if (currentUser == "Customer") {
+                getcurrentUser();
             }
+            
+            Console.SetCursorPosition(65, 30);
+            Console.Write($"Welcome {currentUser}! press enter to continue");
+            Console.Read();
         }
 
 
@@ -567,6 +582,7 @@ namespace mcJollibee3
         
         static void Main(string[] args)
         {
+            notice_fullscreen();
             welcomeScreen();
             while (program_execution_count < 5) {
                 display_mainScreen();
