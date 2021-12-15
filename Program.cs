@@ -119,9 +119,10 @@ namespace mcJollibee3
         static String[] itemNames = {"Chicken with Rice", "Burger", "Fries", "Sundae", "Softdrinks"};
         static Double[] totalItemPrices = new Double[5];
         static int[] orderQuantities = new int[5];
-        static int totalQty = 0, num_userChoice;
-        static Double vat, subtotalPrice, totalPrice;
+        static int totalQty = 0, num_userChoice; 
+        static Double vat, subtotalPrice, totalPrice, customerMoney, customerChange;
         static string currentUser = "Customer", userChoice = "";
+        static bool accept_transaction; 
         
         
         
@@ -225,7 +226,9 @@ namespace mcJollibee3
                 row_totalItemPrices = 20,
                 row_subtotalPrice = 27,
                 row_vat = 26,
-                row_totalPrice = 29;
+                row_totalPrice = 29,
+                row_customerMoney = 32,
+                row_customerChange = 34;
 
             int[] row_itemname = {20, 21, 22, 23, 24};
             int[] column_itemname = {124, 129, 130, 129, 127};
@@ -289,6 +292,14 @@ namespace mcJollibee3
                 //Displays the Total Price with VAT
                 Console.SetCursorPosition(146, row_totalPrice);
                 Console.Write(totalPrice);
+                
+                //Display the money of the customer
+                Console.SetCursorPosition(146, row_customerMoney);
+                Console.Write(customerMoney);
+                
+                //Display the customer's change
+                Console.SetCursorPosition(146, row_customerChange);
+                Console.Write(customerChange);
             }
         }
 
@@ -340,6 +351,47 @@ namespace mcJollibee3
 
             return verified_typeNum_input;
         }
+        
+        
+        static Double typeDouble(String message = "") {
+            int verified_typeDouble_input;
+            String userDouble;
+            bool success_typeDouble;
+
+            do {
+                Console.SetCursorPosition(5,33);
+                Console.Write("                                                                           ");   //clears whatever the user typed in before
+                Console.SetCursorPosition(5,33);
+                if (message == "")
+                {
+                    Console.Write($"{currentUser} type your choice: ");
+                }
+                else
+                {
+                    Console.Write(message);
+                }
+                    
+                userDouble = Console.ReadLine();
+                success_typeDouble = Int32.TryParse(userDouble, out verified_typeDouble_input);
+                if (success_typeDouble) {
+                    return verified_typeDouble_input;
+                }
+                else {
+                    error(5, 35, errorMessage: "Invalid number, please try again.");
+                }
+            }
+            while (success_typeDouble == false);
+
+            return verified_typeDouble_input;
+        }
+
+
+
+        static Double getChange(Double customerMoney)
+        {
+            Double change = customerMoney - totalPrice;
+            return change;
+        }
 
 
 
@@ -364,13 +416,13 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5, 25);
                 Console.Write("To add items, enter its code, comma, then the desired amount. Then press enter.                          ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Otherwise type 'e' once you're done.                                                                     ");  
+                Console.Write("Otherwise type 'q' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
 
-                if (userChoice == "e") {
+                if (userChoice == "q") {
                     success(5, 35);
                     done_addOrder = true;
                     continue;
@@ -446,13 +498,13 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5, 25);
                 Console.Write("To cancel items, enter its code, comma, then the desired amount. Then press enter.                       ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Otherwise type 'e' once you're done.                                                                     ");  
+                Console.Write("Otherwise type 'q' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
                 
-                if (userChoice == "e") {
+                if (userChoice == "q") {
                     success(5, 35);
                     done_cancelOrder = true;
                     continue;
@@ -523,16 +575,86 @@ namespace mcJollibee3
 
 
         
-        static void payment() {
-            Console.Clear();
-            display_paymentScreen();
-            Console.ReadLine();
+        static void payment()
+        {
+            bool paymentSuccess = false;
+            int paymentExecution = 1;
+
+            do
+            {
+                Console.Clear();
+                display_paymentScreen();
+
+                Console.SetCursorPosition(5, 25);
+                Console.Write("Please type in your money");
+                Console.SetCursorPosition(5, 27);
+                customerMoney = typeDouble("₱ ");
+
+                customerChange = getChange(customerMoney);
+
+                if (customerChange == 0)
+                {
+                    break;
+                }
+                else if (customerChange < 0)
+                {
+                    customerChange = 0;
+                    customerMoney = 0;
+                    error(5, 35, "Payment insufficient, please try again...");
+                    Console.ReadLine();
+
+                    if (paymentExecution < 3)
+                    {
+                        success(5, 35, "You might want to cancel some orders to proceed...going back to Main Menu");
+                        Console.ReadLine();
+                        break;
+                    }
+                }
+                else
+                {
+                    display_paymentScreen();
+                    
+                    success(5, 35, $"Thank you {currentUser} and come again!");
+                    Console.ReadLine();
+                    
+                    Console.SetCursorPosition(5, 25);
+                    Console.Write("Type 'q' to quit, otherwise 'n' if there is another customer: ");
+                    paymentSuccess = true;
+
+                    String userChoiceExit = typeChoice();
+                    userChoiceExit = userChoiceExit.ToLower();
+
+                    if (userChoiceExit == "q")
+                    {
+                        accept_transaction = false;
+                    }
+                    else if (userChoiceExit == "n")
+                    {
+                        newCustomer();
+                    }
+                }
+                paymentExecution++;
+            } while (paymentSuccess == false);
         }
 
         
         
         static void newCustomer() {
-            
+            int counter;
+            for (counter = 0; counter < 5; counter++)
+            {
+                totalItemPrices[counter] = 0;
+                orderQuantities[counter] = 0;
+                
+            }
+            totalQty = 0;
+            vat = 0;
+            subtotalPrice = 0;
+            totalPrice = 0;
+            customerMoney = 0;
+            customerChange = 0;
+            currentUser = "Customer";
+            userChoice = "";
         }
         
         
@@ -575,7 +697,7 @@ namespace mcJollibee3
                 getcurrentUser();
             }
             
-            Console.SetCursorPosition(65, 30);
+            Console.SetCursorPosition(60, 30);
             Console.Write($"Welcome {currentUser}! press enter to continue");
             Console.Read();
         }
@@ -609,7 +731,12 @@ namespace mcJollibee3
         {
             notice_fullscreen();
             welcomeScreen();
-            while (program_execution_count < 5) {
+            accept_transaction = true; 
+            while (accept_transaction == true) {
+                if (currentUser == "Customer")
+                {
+                    welcomeScreen();
+                }
                 display_mainScreen();
                 program_execution_count += 1;
                 Console.SetCursorPosition(5, 25);
@@ -651,7 +778,13 @@ namespace mcJollibee3
                         break;
                     }
 
-                    case 4: continue;
+                    case 4:
+                    {
+                        accept_transaction = false;
+                        success(5, 35, $"Thank you {currentUser} and come again!");
+                        Console.Read();
+                        break;
+                    }
 
                     default:
                     {
