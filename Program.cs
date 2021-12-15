@@ -750,7 +750,7 @@ namespace mcJollibee3
                 display_mainScreen();
                 program_execution_count += 1;
                 Console.SetCursorPosition(5, 25);
-                Console.Write("OPTIONS:     [1] Add      [2] Cancel Orders    [3] Payment      [4] Exit");
+                Console.Write("OPTIONS:     [1] Add      [2] Cancel Orders    [3] Payment      [4] Exit ");
                 num_userChoice = typeNum();
                 
                 switch (num_userChoice)
