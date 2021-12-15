@@ -669,6 +669,7 @@ namespace mcJollibee3
 
         static void notice_fullscreen()
         {
+            Console.Clear();
             Console.SetCursorPosition(2, 2);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Tip: For better experience, use a fixed width font.");
