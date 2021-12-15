@@ -119,7 +119,7 @@ namespace mcJollibee3
         static String[] itemNames = {"Chicken with Rice", "Burger", "Fries", "Sundae", "Softdrinks"};
         static Double[] totalItemPrices = new Double[5];
         static int[] orderQuantities = new int[5];
-        static int totalQty = 0, num_userChoice; 
+        static int totalQty = 0, num_userChoice, paymentExecution = 1;
         static Double vat, subtotalPrice, totalPrice, customerMoney, customerChange;
         static string currentUser = "Customer", userChoice = "";
         static bool accept_transaction; 
@@ -315,7 +315,9 @@ namespace mcJollibee3
                 Console.Write("                                                                                                                         ");   //clears whatever the user typed in before
                 Console.SetCursorPosition(5,33);
                 Console.Write($"{currentUser} type your choice: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 userChoice = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 if (run != 1) {
                         if (errorEnable == true) {
                             error(5, 35, errorMessage);
@@ -338,7 +340,9 @@ namespace mcJollibee3
                 Console.Write("                                                                           ");   //clears whatever the user typed in before
                 Console.SetCursorPosition(5,33);
                 Console.Write($"{currentUser} type your choice: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 userNum = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 success_typeNum = Int32.TryParse(userNum, out verified_typeNum_input);
                 if (success_typeNum) {
                     return verified_typeNum_input;
@@ -364,14 +368,18 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5,33);
                 if (message == "")
                 {
+                    
                     Console.Write($"{currentUser} type your choice: ");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                 }
                 else
                 {
                     Console.Write(message);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                 }
                     
                 userDouble = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 success_typeDouble = Int32.TryParse(userDouble, out verified_typeDouble_input);
                 if (success_typeDouble) {
                     return verified_typeDouble_input;
@@ -578,7 +586,7 @@ namespace mcJollibee3
         static void payment()
         {
             bool paymentSuccess = false;
-            int paymentExecution = 1;
+            paymentExecution = 1;
 
             do
             {
@@ -677,7 +685,7 @@ namespace mcJollibee3
             while (currentUser == "Customer" || currentUser == "") {
                 Console.SetCursorPosition(65,30);
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("What is your name? ");
+                Console.Write("Hello! What is your name? ");
                 currentUser = Console.ReadLine();
                 if (run != 1) {
                     error(53, 35, "You typed invalid name, please try again");
@@ -697,8 +705,10 @@ namespace mcJollibee3
                 getcurrentUser();
             }
             
-            Console.SetCursorPosition(60, 30);
+            Console.SetCursorPosition(62, 30);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write($"Welcome {currentUser}! press enter to continue");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Read();
         }
 
