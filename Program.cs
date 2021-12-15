@@ -48,16 +48,16 @@ namespace mcJollibee3
                                                                                                                    |               Metro Manila              |
      ___________________________        ___________________________                                                |                                         |
     |                           |      |                           |                                               |                                         |
-    |           Sundae          |      |         Softdrinks        |                                               |    Qty       Item            Price      |
+    |           Sundae          |      |         Softdrinks        |                                               |    QTY       ITEM            PRICE      |
     |                           |      |                           |                                               |                                         |
     |    ₱30    Code: sde       |      |    ₱20    Code: sds       |                                               |                           ₱             |
     |___________________________|      |___________________________|                                               |                           ₱             |
                                                                                                                    |                           ₱             |
                                                                                                                    |                           ₱             |
                                                                                                                    |                           ₱             |
-                                                                                                                   |  _____________________________________  |
+                                                                                                                   |  _______                 _____________  |
                                                                                                                    |                                         |
-                                                                                                                   |              Subtotal     ₱             |
+                                                                                                                   |             SUBTOTAL:     ₱             |
                                                                                                                    |                                         | 
                                                                                                                    +-----------------------------------------+
         ";
@@ -77,26 +77,26 @@ namespace mcJollibee3
                                                                                                                    |               Metro Manila              |
                                                                                                                    |                                         |
      ____                                        _                                                                 |                                         |
-    |  _ \  __ _  _   _  _ __ ___    ___  _ __  | |_                                                               |    Qty       Item            Price      |
+    |  _ \  __ _  _   _  _ __ ___    ___  _ __  | |_                                                               |    QTY       ITEM            PRICE      |
     | |_) |/ _` || | | || '_ ` _ \  / _ \| '_ \ | __|                                                              |                                         |     
     |  __/| (_| || |_| || | | | | ||  __/| | | || |_                                                               |                           ₱             |
     |_|    \__,_| \__, ||_| |_| |_| \___||_| |_| \__|                                                              |                           ₱             |
                   |___/                                                                                            |                           ₱             |
                                                                                                                    |                           ₱             |
                                                                                                                    |                           ₱             |
-                                                                                                                   |  _____________________________________  |
+                                                                                                                   |  _______                 _____________  |
                                                                                                                    |                                         |   
-                                                                                                                   |              Subtotal     ₱             |
+                                                                                                                   |              SUBTOTAL:    ₱             |
                                                                                                                    |                                         |
-                                                                                                                   |             + 10% VAT     ₱             |
-                                                                                                                   |_________________________________________|
+                                                                                                                   |             + 10% VAT:    ₱             |
+                                                                                                                   |                          _____________  |
                                                                                                                    |                                         |
-                                                                                                                   |                  Cash:    ₱             |
-                                                                                                                   |                                         |   
-                                                                                                                   |      - Total with VAT:    ₱             |
-                                                                                                                   |  _____________________________________  |
+                                                                                                                   |        Total WITH VAT:    ₱             |
+                                                                                                                   |_________________________________________|    
                                                                                                                    |                                         |
-                                                                                                                   |                Change:    ₱             |   
+                                                                                                                   |                  CASH:    ₱             |
+                                                                                                                   |                                         |
+                                                                                                                   |                CHANGE:    ₱             |   
                                                                                                                    |                                         |
                                                                                                                    +-----------------------------------------+
         ";
@@ -224,8 +224,8 @@ namespace mcJollibee3
                 row_totalQty = 27,
                 row_totalItemPrices = 20,
                 row_subtotalPrice = 27,
-                row_vat = 29,
-                row_totalPrice = 32;
+                row_vat = 26,
+                row_totalPrice = 29;
 
             int[] row_itemname = {20, 21, 22, 23, 24};
             int[] column_itemname = {124, 129, 130, 129, 127};
@@ -236,9 +236,6 @@ namespace mcJollibee3
                 row_orderQuantities -= difference;
                 row_totalQty -=  difference;
                 row_totalItemPrices -= difference;
-                row_subtotalPrice += 4 ;
-                row_vat -= difference;
-                row_totalPrice -= difference;
             }
             
 
@@ -260,7 +257,7 @@ namespace mcJollibee3
             //Displays the Item name
             for (counter=0; counter < 5;counter++)
             {
-                row_itemname[counter] += difference;
+                row_itemname[counter] -= difference;
                 if (orderQuantities[counter] != 0) {
                     Console.SetCursorPosition(column_itemname[counter], row_itemname[counter]);   //row_itemname initial value: 20
                     Console.Write(itemNames[counter]);
@@ -279,7 +276,7 @@ namespace mcJollibee3
             
             
             //Displays the subtotal Price
-            Console.SetCursorPosition(146, row_subtotalPrice);
+            Console.SetCursorPosition(146, row_subtotalPrice -= difference);
             Console.Write(subtotalPrice);
 
             
