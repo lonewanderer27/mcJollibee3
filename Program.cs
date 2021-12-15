@@ -424,7 +424,7 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5, 25);
                 Console.Write("To add items, enter its code, comma, then the desired amount. Then press enter.                          ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Otherwise type 'q' once you're done.                                                                     ");  
+                Console.Write("Type 'q' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
@@ -506,7 +506,7 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5, 25);
                 Console.Write("To cancel items, enter its code, comma, then the desired amount. Then press enter.                       ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Otherwise type 'q' once you're done.                                                                     ");  
+                Console.Write("Type 'q' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
@@ -613,7 +613,7 @@ namespace mcJollibee3
 
                     if (paymentExecution < 3)
                     {
-                        success(5, 35, "You might want to cancel some orders to proceed...going back to Main Menu");
+                        success(5, 35, "You might want to cancel some orders to proceed... going back to Main Menu.");
                         Console.ReadLine();
                         break;
                     }
@@ -675,7 +675,7 @@ namespace mcJollibee3
             Console.WriteLine("Warning: Please maximize the window before continuing...");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.Write("Press Enter to continue ");
+            Console.Write("Press Enter to continue.");
             Console.ReadLine();
         }
         
@@ -687,7 +687,7 @@ namespace mcJollibee3
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Hello! What is your name? ");
                 currentUser = Console.ReadLine();
-                if (run != 1) {
+                if (run < 1) {
                     error(53, 35, "You typed invalid name, please try again");
                 }
                 run++;
@@ -707,7 +707,7 @@ namespace mcJollibee3
             
             Console.SetCursorPosition(62, 30);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"Welcome {currentUser}! press enter to continue");
+            Console.Write($"Welcome {currentUser}! Press enter to continue.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.Read();
         }
