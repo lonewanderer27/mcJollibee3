@@ -1,5 +1,7 @@
 ﻿
 
+using System.Data;
+
 namespace mcJollibee3
 {
     class Program
@@ -46,7 +48,7 @@ namespace mcJollibee3
                                                                                                                    |               Metro Manila              |
      ___________________________        ___________________________                                                |                                         |
     |                           |      |                           |                                               |                                         |
-    |           Sundae          |      |         Softdrinks        |                                               |     Qty      Item            Price      |
+    |           Sundae          |      |         Softdrinks        |                                               |    Qty       Item            Price      |
     |                           |      |                           |                                               |                                         |
     |    ₱30    Code: sde       |      |    ₱20    Code: sds       |                                               |                           ₱             |
     |___________________________|      |___________________________|                                               |                           ₱             |
@@ -56,22 +58,14 @@ namespace mcJollibee3
                                                                                                                    |  _____________________________________  |
                                                                                                                    |                                         |
                                                                                                                    |              Subtotal     ₱             |
-                                                                                                                   |                                         |
-                                                                                                                   |             + 10% VAT     ₱             |
-                                                                                                                   |  _____________________________________  |
-                                                                                                                   |                                         |
-                                                                                                                   |        Total with VAT:    ₱             |
-                                                                                                                   |                                         |   
+                                                                                                                   |                                         | 
                                                                                                                    +-----------------------------------------+
         ";
 
         static String paymentScreen = @"
-                                                                                                                      ____                   _         _   
-                                                                                                                     |  _ \  ___   ___  ___ (_) _ __  | |_ 
-                                                                                                                     | |_) |/ _ \ / __|/ _ \| || '_ \ | __|
-                                                                                                                     |  _ <|  __/| (__|  __/| || |_) || |_ 
-                                                                                                                     |_| \_\\___| \___|\___||_|| .__/  \__|
-                                                                                                                                               |_|         
+
+
+                                                                                                                   Your receipt:
 
                                                                                                                    +-----------------------------------------+
                                                                                                                    |                                         |
@@ -83,7 +77,7 @@ namespace mcJollibee3
                                                                                                                    |               Metro Manila              |
                                                                                                                    |                                         |
      ____                                        _                                                                 |                                         |
-    |  _ \  __ _  _   _  _ __ ___    ___  _ __  | |_                                                               |     Qty      Item            Price      |
+    |  _ \  __ _  _   _  _ __ ___    ___  _ __  | |_                                                               |    Qty       Item            Price      |
     | |_) |/ _` || | | || '_ ` _ \  / _ \| '_ \ | __|                                                              |                                         |     
     |  __/| (_| || |_| || | | | | ||  __/| | | || |_                                                               |                           ₱             |
     |_|    \__,_| \__, ||_| |_| |_| \___||_| |_| \__|                                                              |                           ₱             |
@@ -128,6 +122,8 @@ namespace mcJollibee3
         static int totalQty = 0, num_userChoice;
         static Double vat, subtotalPrice, totalPrice;
         static string currentUser = "Customer", userChoice = "";
+        
+        
         
         
         static void error(int col, int row, string errorMessage = "Error. Please try again") {
@@ -219,71 +215,84 @@ namespace mcJollibee3
         }
         
         
-        static void displayOrders() {
+        static void displayOrders(bool displayReceipt = false) {
+            //Displays the contents of orders
+            //It can also be used to display the final receipt by calling it with a custom row parameter number.
 
-            //Displays the Qty of the dish if it's not 0
-            int counter, row = 20;
-            
-            for (counter=0; counter < 5;counter++) {
-                Console.SetCursorPosition(121, row);
-                Console.Write(orderQuantities[counter]);
-                row++;
+            int difference = 0,
+                row_orderQuantities = 20,
+                row_totalQty = 27,
+                row_totalItemPrices = 20,
+                row_subtotalPrice = 27,
+                row_vat = 29,
+                row_totalPrice = 32;
+
+            int[] row_itemname = {20, 21, 22, 23, 24};
+            int[] column_itemname = {124, 129, 130, 129, 127};
+
+            if (displayReceipt == true)
+            {
+                difference = 3;
+                row_orderQuantities -= difference;
+                row_totalQty -=  difference;
+                row_totalItemPrices -= difference;
+                row_subtotalPrice += 4 ;
+                row_vat -= difference;
+                row_totalPrice -= difference;
             }
             
+
+            //Displays the Qty of the dish if it's not 0
+            int counter;
+            
+            for (counter=0; counter < 5;counter++) {
+                Console.SetCursorPosition(120, row_orderQuantities);
+                Console.Write(orderQuantities[counter]);
+                row_orderQuantities++;
+            }
+            
+            
             //Displays the Total Qty
-            Console.SetCursorPosition(121, 27);
+            Console.SetCursorPosition(120, row_totalQty);
             Console.Write(totalQty);
             
             
             //Displays the Item name
-            for (counter=0; counter < 5;counter++) {
+            for (counter=0; counter < 5;counter++)
+            {
+                row_itemname[counter] += difference;
                 if (orderQuantities[counter] != 0) {
-                    Console.SetCursorPosition(126, 20);
-                    Console.Write("Chick w/ Rice");
-                }
-
-                if (orderQuantities[counter] != 0) {
-                    Console.SetCursorPosition(126, 21);
-                    Console.Write("Burger");
-                }
-
-                if (orderQuantities[counter] != 0) {
-                    Console.SetCursorPosition(126, 22);
-                    Console.Write("Fries");
-                }
-
-                if (orderQuantities[counter] != 0) {
-                    Console.SetCursorPosition(126, 23);
-                    Console.Write("Sundae");
-                }
-                
-                if (orderQuantities[counter] != 0) {
-                    Console.SetCursorPosition(126, 24);
-                    Console.Write("Softdrinks");
+                    Console.SetCursorPosition(column_itemname[counter], row_itemname[counter]);   //row_itemname initial value: 20
+                    Console.Write(itemNames[counter]);
                 }
             }
             
+            
             //Displays the calculated price of each product
-            row = 20;
             counter = 0;
             while(counter < 5) {
-                Console.SetCursorPosition(146, row);
+                Console.SetCursorPosition(146, row_totalItemPrices);
                 Console.Write(totalItemPrices[counter]);
-                row++;
+                row_totalItemPrices++;
                 counter++;
             }
             
+            
             //Displays the subtotal Price
-            Console.SetCursorPosition(146, 27);
+            Console.SetCursorPosition(146, row_subtotalPrice);
             Console.Write(subtotalPrice);
+
             
-            //Displays the VAT
-            Console.SetCursorPosition(146, 29);
-            Console.Write(vat);
+            if (displayReceipt == true)
+            {
+                //Displays the VAT
+                Console.SetCursorPosition(146, row_vat);
+                Console.Write(vat);
             
-            //Displays the Total Price with VAT
-            Console.SetCursorPosition(146, 32);
-            Console.Write(totalPrice);
+                //Displays the Total Price with VAT
+                Console.SetCursorPosition(146, row_totalPrice);
+                Console.Write(totalPrice);
+            }
         }
 
 
@@ -294,14 +303,14 @@ namespace mcJollibee3
             int run  = 1;            
             userChoice = " ";    //not overriding this causes it to take the previous 
             while (userChoice == " ") {
-                Console.SetCursorPosition(5,30);    //it feels weird that C# doesn't support multiplying strings using integers, what a shame tbh...
-                Console.Write("                                                                           ");   //clears whatever the user typed in before
-                Console.SetCursorPosition(5,30);
+                Console.SetCursorPosition(5,33);    //it feels weird that C# doesn't support multiplying strings using integers, what a shame tbh...
+                Console.Write("                                                                                                                         ");   //clears whatever the user typed in before
+                Console.SetCursorPosition(5,33);
                 Console.Write($"{currentUser} type your choice: ");
                 userChoice = Console.ReadLine();
                 if (run != 1) {
                         if (errorEnable == true) {
-                            error(5, 32, errorMessage);
+                            error(5, 35, errorMessage);
                         }
                 }
                 run++;
@@ -317,9 +326,9 @@ namespace mcJollibee3
             bool success_typeNum;
 
             do {
-                Console.SetCursorPosition(5,30);
+                Console.SetCursorPosition(5,33);
                 Console.Write("                                                                           ");   //clears whatever the user typed in before
-                Console.SetCursorPosition(5,30);
+                Console.SetCursorPosition(5,33);
                 Console.Write($"{currentUser} type your choice: ");
                 userNum = Console.ReadLine();
                 success_typeNum = Int32.TryParse(userNum, out verified_typeNum_input);
@@ -327,7 +336,7 @@ namespace mcJollibee3
                     return verified_typeNum_input;
                 }
                 else {
-                    error(5, 32, errorMessage: "Invalid number, please try again.");
+                    error(5, 35, errorMessage: "Invalid number, please try again.");
                 }
             }
             while (success_typeNum == false);
@@ -347,45 +356,45 @@ namespace mcJollibee3
         
         static void addOrder() {
             bool done_addOrder = false;
-
-            help_addOrder();
-
+            
             while (done_addOrder == false)
             {
                 bool success_addOrder = false;
                 userChoice = ""; 
+                
+                help_addOrder();
 
                 Console.SetCursorPosition(5, 25);
-                Console.Write("To add items, enter its code, comma then the desired amount. Press enter                            ");
+                Console.Write("To add items, enter its code, comma, then the desired amount. Then press enter.                          ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Enter 'e' once you're done ordering all.                                                            ");  
+                Console.Write("Otherwise type 'e' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
 
                 if (userChoice == "e") {
-                    success(5, 32);
+                    success(5, 35);
                     done_addOrder = true;
                     continue;
                 }
 
                 if (userChoice == "") 
                 {
-                    error(5, 32);
+                    error(5, 35);
                     continue;
                 }
 
                 if (array_userChoice.Length != 2)
                 {
-                    error(5,32);
+                    error(5,35);
                     continue;
                 }
                 
                 int num_addOrder = Int32.Parse(array_userChoice[1]);
                 if (num_addOrder < 0 || num_addOrder == 0)
                 {
-                    error(5, 32, errorMessage:"You entered invalid number.");
+                    error(5, 35, errorMessage:"You entered invalid number.");
                     continue;
                 } 
 
@@ -395,7 +404,7 @@ namespace mcJollibee3
                     {    
                         orderQuantities[counter] += Int32.Parse(array_userChoice[1]);
                         display_mainScreen();
-                        success(5, 32, $"Successfully added {array_userChoice[1]} {itemNames[counter]}");
+                        success(5, 35, $"Added {array_userChoice[1]} {itemNames[counter]}");
                         array_userChoice[0] = "";
                         array_userChoice[1] = "";
                         success_addOrder = true;
@@ -404,13 +413,12 @@ namespace mcJollibee3
                     
                     if (success_addOrder == false) 
                     {
-                        error(5,32, $"Item code '{array_userChoice[0]}' is not found, please try again.");
+                        error(5,35, $"Item code '{array_userChoice[0]}' is not found, please try again.");
                     }
                 }
-                
-                
             }
         }
+        
         
         static void help_addOrder() {
             //Displays an instruction on how to add orders
@@ -423,52 +431,52 @@ namespace mcJollibee3
             displayItemCode = itemCodes[random_item];
             displayItemName = itemNames[random_item];
             Console.SetCursorPosition(5, 26);
-            Console.Write($"For example, to add {displayAmount} {displayItemName}, type: '{displayItemCode}, {displayAmount}'");
+            Console.Write($"For example, to add {displayAmount} {displayItemName}(s)   type: '{displayItemCode}, {displayAmount}'                                ");
         }
             
         
 
         static void cancelOrder() {
             bool done_cancelOrder = false;
-
-            help_cancelOrder();
-
+            
             while (done_cancelOrder == false)
             {
                 bool success_cancelOrder = false;
                 userChoice = ""; 
-
+                
+                help_cancelOrder();
+                
                 Console.SetCursorPosition(5, 25);
-                Console.Write("To cancel items, enter its code, comma then the desired amount. Press enter                            ");
+                Console.Write("To cancel items, enter its code, comma, then the desired amount. Then press enter.                       ");
                 Console.SetCursorPosition(5, 27);
-                Console.Write("Enter 'e' once you're done.                                                            ");  
+                Console.Write("Otherwise type 'e' once you're done.                                                                     ");  
 
                 userChoice = typeChoice(errorEnable: false);
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
                 
                 if (userChoice == "e") {
-                    success(5, 32);
+                    success(5, 35);
                     done_cancelOrder = true;
                     continue;
                 }
                 
                 if (userChoice == "") 
                 {
-                    error(5, 32);
+                    error(5, 35);
                     continue;
                 }
 
                 if (array_userChoice.Length != 2)
                 {
-                    error(5,32);
+                    error(5,35);
                     continue;
                 }
                 
                 int num_cancelOrder = Int32.Parse(array_userChoice[1]);
                 if (num_cancelOrder < 0 || num_cancelOrder == 0)    //breaks the loop if the user entered a negative number
                 {
-                    error(5, 32, errorMessage:"You entered invalid number.");
+                    error(5, 35, errorMessage:"You entered invalid number.");
                     continue;
                 }
 
@@ -479,13 +487,14 @@ namespace mcJollibee3
                     {    
                         if (num_cancelOrder > orderQuantities[counter])
                         {
-                            error(5, 32, "You cancelled amount of items higher than you have!");
+                            error(5, 35, "You cancelled amount of items higher than you have!");
                             break;
                         }
                         
                         orderQuantities[counter] -= Int32.Parse(array_userChoice[1]);
                         display_mainScreen();
-                        success(5, 32, $"Successfully removed {array_userChoice[1]} {itemNames[counter]}");
+                        computeOrders();
+                        success(5, 35, $"Removed {array_userChoice[1]} {itemNames[counter]}");
                         array_userChoice[0] = "";
                         array_userChoice[1] = "";
                         success_cancelOrder = true;
@@ -494,12 +503,13 @@ namespace mcJollibee3
                     
                     if (success_cancelOrder == false) 
                     {
-                        error(5,32, $"Item code '{array_userChoice[0]}' is not found, please try again.");
+                        error(5,35, $"Item code '{array_userChoice[0]}' is not found, please try again.");
                     }
                 }
             }
         }
 
+        
         static void help_cancelOrder() {
             //Displays an instruction on how to cancel orders
             int displayAmount, random_item;
@@ -511,13 +521,15 @@ namespace mcJollibee3
             displayItemCode = itemCodes[random_item];
             displayItemName = itemNames[random_item];
             Console.SetCursorPosition(5, 26);
-            Console.Write($"For example, to cancel {displayAmount} {displayItemName}(s), type: '{displayItemCode}, {displayAmount}'");
+            Console.Write($"For example, to cancel {displayAmount} {displayItemName}(s)     type: '{displayItemCode}, {displayAmount}'                          ");
         }
 
 
         
         static void payment() {
-
+            Console.Clear();
+            display_paymentScreen();
+            Console.ReadLine();
         }
 
         
@@ -525,36 +537,38 @@ namespace mcJollibee3
         static void newCustomer() {
             
         }
+        
+        
 
         static void notice_fullscreen()
         {
             Console.Write("Tip: For better experience, please use a fixed width font ");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("Warning: ");
-            Console.Write("Please maximize the window before continuing...");
+            Console.WriteLine("Warning: Please maximize the window before continuing...");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("press Enter to continue");
+            Console.Write("Press Enter to continue ");
             Console.ReadLine();
         }
         
         static void getcurrentUser()
         {
             int run = 1;
-            while (currentUser == "Customer") {
+            while (currentUser == "Customer" || currentUser == "") {
                 Console.SetCursorPosition(65,30);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("What is your name? ");
                 currentUser = Console.ReadLine();
                 if (run != 1) {
-                    error(53, 32, "You typed invalid name, please try again");
+                    error(53, 35, "You typed invalid name, please try again");
                 }
                 run++;
             }
         }
         
-        static void welcomeScreen() {
+        static void welcomeScreen() 
+        {
             Console.Clear();
             //column, row
             Console.SetCursorPosition(15,10);
@@ -570,9 +584,23 @@ namespace mcJollibee3
         }
 
 
-        static void display_mainScreen() {
+        static void display_paymentScreen()
+        {
+            Console.Clear();
             Console.SetCursorPosition(5,0);
             //Displays the template of the main screen which contains the menu list and current receipt.
+            Console.Write(paymentScreen);
+            //Overlays the values of receipt on top of the payment screen's template.
+            computeOrders();
+            displayOrders(displayReceipt:true);
+        }
+
+
+        static void display_mainScreen() 
+        {
+            Console.Clear();
+            Console.SetCursorPosition(5,0);
+            //Displays the template of the main screen which contains the menu list and current orders.
             Console.Write(mainScreen);
             //Overlays the values of the orders on top of the main screen's template.
             computeOrders();
@@ -590,24 +618,51 @@ namespace mcJollibee3
                 Console.SetCursorPosition(5, 25);
                 Console.Write("OPTIONS:     [1]Add      [2]Cancel Orders    [3]Payment      [4]Exit");
                 num_userChoice = typeNum();
-                if (num_userChoice == 1) {
-                    addOrder();
-                }
-                else if (num_userChoice == 2) {
-                    cancelOrder();
-                }
-                else if (num_userChoice == 3) {
-                    payment();
-                }
-                else if (num_userChoice == 4) {
-                    
-                }
-                else {
-                    error(5, 32, errorMessage: "Invalid number choice, please try again.");
-                }
+                
+                switch (num_userChoice)
+                {
+                    case 1: addOrder();
+                        break;
 
+                    case 2:
+                    {
+                        if (totalPrice == 0)
+                        {
+                            error(5, 35, errorMessage: "You have ordered nothing, please do so by entering '1', then come back here.");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            cancelOrder();
+                        }
+
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        if (totalPrice == 0)
+                        {
+                            error(5, 35, errorMessage: "You have ordered nothing, please do so by entering '1', then come back here.");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            payment();
+                        }
+                        
+                        break;
+                    }
+
+                    case 4: continue;
+
+                    default:
+                    {
+                        error(5, 35, errorMessage: "Invalid number choice, please try again.");
+                        break;
+                    }
+                }
             }
         }
-        
     }
 }
