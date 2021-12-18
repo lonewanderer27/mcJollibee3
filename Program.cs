@@ -331,9 +331,9 @@ namespace mcJollibee3
         
         
         static int typeNum() {
-            int verified_typeNum_input;
+            int verified_typeNum_input = 0;
+            int[] verified_int_array = new int[2];
             String userNum;
-            bool success_typeNum;
 
             do {
                 Console.SetCursorPosition(5,33);
@@ -342,25 +342,70 @@ namespace mcJollibee3
                 Console.Write($"{currentUser} type your choice: ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 userNum = Console.ReadLine();
+                verified_int_array = verify_int(userNum);
                 Console.ForegroundColor = ConsoleColor.White;
-                success_typeNum = Int32.TryParse(userNum, out verified_typeNum_input);
-                if (success_typeNum) {
-                    return verified_typeNum_input;
+                if (verified_int_array[1] == 1)     //if the verify_int() response is 1 in index 1, meaning the conversion is a success...
+                {
+                    verified_typeNum_input = verified_int_array[0];     //assigns the value to be returned from index 0 of the response array
                 }
                 else {
                     error(5, 35, errorMessage: "Invalid number, please try again.");
                 }
             }
-            while (success_typeNum == false);
+            while (verified_int_array[1] == 0);
 
             return verified_typeNum_input;
+        }
+
+
+        //verifies if the string can be converted to Int32
+        //returns the verified_int array with 2 numbers
+        //[0] - contains the number if the conversion is successful
+        //[1] - contains the response, 0 - unsuccessful / 1 - successful
+        static int[] verify_int(String num)
+        {
+            int[] verified_int_array = new int[2];
+            bool success_convert_int;
+            success_convert_int = Int32.TryParse(num, out verified_int_array[0]);
+            if (success_convert_int)
+            {
+                verified_int_array[1] = 1; 
+                return verified_int_array;
+            }
+            else
+            {
+                verified_int_array[1] = 0;
+                return verified_int_array;
+            }
+        }
+        
+        
+        //verifies if the string can be converted to Int32
+        //returns the verified_int array with 2 numbers
+        //[0] - contains the number if the conversion is successful
+        //[1] - contains the response, 0 - unsuccessful / 1 - successful
+        static Double[] verify_Double(String num)
+        {
+            Double[] verified_Double_array = new Double[2];
+            bool success_convert_Double;
+            success_convert_Double = Double.TryParse(num, out verified_Double_array[0]);
+            if (success_convert_Double)
+            {
+                verified_Double_array[1] = 1; 
+                return verified_Double_array;
+            }
+            else
+            {
+                verified_Double_array[1] = 0;
+                return verified_Double_array;
+            }
         }
         
         
         static Double typeDouble(String message = "") {
-            Double verified_typeDouble_input;
+            Double verified_typeDouble_input = 0;
+            Double[] verified_Double_array = new Double[2];
             String userDouble;
-            bool success_typeDouble;
 
             do {
                 Console.SetCursorPosition(5,33);
@@ -380,15 +425,14 @@ namespace mcJollibee3
                     
                 userDouble = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.White;
-                success_typeDouble = Double.TryParse(userDouble, out verified_typeDouble_input);
-                if (success_typeDouble) {
-                    return verified_typeDouble_input;
+                if (verified_Double_array[1] == 1) {
+                    verified_typeDouble_input = verified_Double_array[0];
                 }
                 else {
                     error(5, 35, errorMessage: "Invalid number, please try again.");
                 }
             }
-            while (success_typeDouble == false);
+            while (verified_Double_array[1] == 0);
 
             return verified_typeDouble_input;
         }
@@ -776,6 +820,7 @@ namespace mcJollibee3
                 Console.Write("OPTIONS:     [1] Add      [2] Cancel Orders    [3] Payment      [4] Exit ");
                 num_userChoice = typeNum();
                 
+                
                 switch (num_userChoice)
                 {
                     case 1: addOrder();
@@ -786,6 +831,7 @@ namespace mcJollibee3
                         if (subtotalPrice == 0)
                         {
                             error(5, 35, errorMessage: "You have ordered nothing, please do so by typing '1' then press enter.");
+                            Console.ReadLine();
                         }
                         else
                         {
@@ -797,9 +843,11 @@ namespace mcJollibee3
 
                     case 3:
                     {
+                        userChoice = "";
                         if (subtotalPrice == 0)
                         {
                             error(5, 35, errorMessage: "You have ordered nothing, please do so by typing '1' then press enter.");
+                            Console.ReadLine();
                         }
                         else
                         {
@@ -811,9 +859,23 @@ namespace mcJollibee3
 
                     case 4:
                     {
-                        accept_transaction = false;
-                        success(5, 35, $"Thank you {currentUser} and come again!");
-                        Console.Read();
+                        if (subtotalPrice != 0)
+                        {
+                            error(5, 35, errorMessage: "You still unpaid orders, are you sure to leave? [Y/N]");
+                            userChoice = typeChoice().ToLower();
+                            if (userChoice == "y")
+                            {
+                                accept_transaction = false;
+                                success(5, 35, $"Thank you {currentUser} and come again!");
+                                Console.ReadLine();
+                            }
+                        }
+                        else
+                        {
+                            accept_transaction = false;
+                            success(5, 35, $"Thank you {currentUser} and come again!");
+                            Console.Read();
+                        }
                         break;
                     }
 
