@@ -1,6 +1,7 @@
 ﻿
 
 using System.Data;
+using System.Globalization;
 
 namespace mcJollibee3
 {
@@ -333,6 +334,7 @@ namespace mcJollibee3
         static int typeNum() {
             int verified_typeNum_input = 0;
             int[] verified_int_array = new int[2];
+            verified_int_array[1] = 0;
             String userNum;
 
             do {
@@ -348,7 +350,8 @@ namespace mcJollibee3
                 {
                     verified_typeNum_input = verified_int_array[0];     //assigns the value to be returned from index 0 of the response array
                 }
-                else {
+                else if (verified_int_array[1] == 0) 
+                {
                     error(5, 35, errorMessage: "Invalid number, please try again.");
                 }
             }
@@ -357,11 +360,14 @@ namespace mcJollibee3
             return verified_typeNum_input;
         }
 
-
-        //verifies if the string can be converted to Int32
-        //returns the verified_int array with 2 numbers
-        //[0] - contains the number if the conversion is successful
-        //[1] - contains the response, 0 - unsuccessful / 1 - successful
+        
+        
+        /*
+        verifies if the string can be converted to Int32
+        returns the verified_int array with 2 numbers
+        [0] - contains the number if the conversion is successful
+        [1] - contains the response, 0 - unsuccessful / 1 - successful
+        */
         static int[] verify_int(String num)
         {
             int[] verified_int_array = new int[2];
@@ -369,21 +375,25 @@ namespace mcJollibee3
             success_convert_int = Int32.TryParse(num, out verified_int_array[0]);
             if (success_convert_int)
             {
-                verified_int_array[1] = 1; 
-                return verified_int_array;
+                verified_int_array[1] = 1;
             }
             else
             {
+                verified_int_array[0] = 0;
                 verified_int_array[1] = 0;
-                return verified_int_array;
             }
+
+            return verified_int_array;
         }
         
         
-        //verifies if the string can be converted to Int32
-        //returns the verified_int array with 2 numbers
-        //[0] - contains the number if the conversion is successful
-        //[1] - contains the response, 0 - unsuccessful / 1 - successful
+        
+        /*
+        verifies if the string can be converted to Double
+        returns the verified_Double array with 2 numbers
+        [0] - contains the number if the conversion is successful
+        [1] - contains the response, 0 - unsuccessful / 1 - successful
+        */
         static Double[] verify_Double(String num)
         {
             Double[] verified_Double_array = new Double[2];
@@ -391,20 +401,23 @@ namespace mcJollibee3
             success_convert_Double = Double.TryParse(num, out verified_Double_array[0]);
             if (success_convert_Double)
             {
-                verified_Double_array[1] = 1; 
-                return verified_Double_array;
+                verified_Double_array[1] = 1;
             }
             else
             {
+                verified_Double_array[0] = 0;
                 verified_Double_array[1] = 0;
-                return verified_Double_array;
             }
+
+            return verified_Double_array;
         }
+        
         
         
         static Double typeDouble(String message = "") {
             Double verified_typeDouble_input = 0;
             Double[] verified_Double_array = new Double[2];
+            verified_Double_array[1] = 0;
             String userDouble;
 
             do {
@@ -424,11 +437,13 @@ namespace mcJollibee3
                 }
                     
                 userDouble = Console.ReadLine();
+                verified_Double_array = verify_Double(userDouble);
                 Console.ForegroundColor = ConsoleColor.White;
                 if (verified_Double_array[1] == 1) {
                     verified_typeDouble_input = verified_Double_array[0];
                 }
-                else {
+                else if (verified_Double_array[1] == 0)  
+                {
                     error(5, 35, errorMessage: "Invalid number, please try again.");
                 }
             }
@@ -457,6 +472,7 @@ namespace mcJollibee3
         
         static void addOrder() {
             bool done_addOrder = false;
+            int[] verified_int_array = new int[2];
             
             while (done_addOrder == false)
             {
@@ -474,7 +490,7 @@ namespace mcJollibee3
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
 
-                if (userChoice == "q") {
+                if (userChoice.ToLower() == "q") {
                     success(5, 35);
                     done_addOrder = true;
                     continue;
@@ -491,6 +507,13 @@ namespace mcJollibee3
                     error(5,35);
                     continue;
                 }
+
+                verified_int_array = verify_int(array_userChoice[1]);
+                if (verified_int_array[1] == 0)
+                {
+                    error(5, 35, "You entered invalid number.");
+                    continue;
+                } 
                 
                 int num_addOrder = Int32.Parse(array_userChoice[1]);
                 if (num_addOrder < 0 || num_addOrder == 0)
@@ -544,6 +567,7 @@ namespace mcJollibee3
 
         static void cancelOrder() {
             bool done_cancelOrder = false;
+            int[] verified_int_array = new int[2];
             
             while (done_cancelOrder == false)
             {
@@ -561,7 +585,7 @@ namespace mcJollibee3
                 string[] array_userChoice = splitString(userChoice);    //splits the answer of the user into an array.
                 //for example: 'bgr, 2'     array_userChoice[0] = bgr   meanwhile      array_userChoice[1] = 2
                 
-                if (userChoice == "q") {
+                if (userChoice.ToLower() == "q") {
                     success(5, 35);
                     done_cancelOrder = true;
                     continue;
@@ -578,6 +602,13 @@ namespace mcJollibee3
                     error(5,35);
                     continue;
                 }
+                
+                verified_int_array = verify_int(array_userChoice[1]);
+                if (verified_int_array[1] == 0)
+                {
+                    error(5, 35, "You entered invalid number.");
+                    continue;
+                } 
                 
                 int num_cancelOrder = Int32.Parse(array_userChoice[1]);
                 if (num_cancelOrder < 0 || num_cancelOrder == 0)    //breaks the loop if the user entered a negative number
@@ -701,6 +732,13 @@ namespace mcJollibee3
                 }
                 paymentExecution++;
             } while (paymentSuccess == false);
+        }
+
+        static void exit()
+        {
+            accept_transaction = false;
+            success(5, 35, $"Thank you {currentUser} and come again!");
+            Console.Read();
         }
 
         
@@ -861,20 +899,25 @@ namespace mcJollibee3
                     {
                         if (subtotalPrice != 0)
                         {
-                            error(5, 35, errorMessage: "You still unpaid orders, are you sure to leave? [Y/N]");
+                            error(5, 25, errorMessage: "You still have unpaid orders, are you sure you're leave? [Y/N]");
+                            /*
+                             * pwede din pala ang ginagawa ko sa python hahaha
+                             * here im using typeChoice to get choice input from the user and then pipe it to ToLower() so it'll turn into lowercase
+                             * the logical choice is to put it into typeChoice function directly but that handles a lot more than Y/N
+                             * it would complicate the code because what if the typeChoice encounters a number, i'll lower it pa diba hahaha
+                             * so it'll be here in the meantime
+                             *
+                             * i wish there is a library that handles this or a shortcut of TryParse instead...
+                             */
                             userChoice = typeChoice().ToLower();
                             if (userChoice == "y")
                             {
-                                accept_transaction = false;
-                                success(5, 35, $"Thank you {currentUser} and come again!");
-                                Console.ReadLine();
+                                exit();
                             }
                         }
                         else
                         {
-                            accept_transaction = false;
-                            success(5, 35, $"Thank you {currentUser} and come again!");
-                            Console.Read();
+                            exit();
                         }
                         break;
                     }
