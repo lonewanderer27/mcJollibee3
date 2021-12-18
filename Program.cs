@@ -769,7 +769,7 @@ namespace mcJollibee3
         
         
 
-        static void notice_fullscreen()
+        static void notice_startup()
         {
             Console.Clear();
             Console.SetCursorPosition(2, 2);
@@ -844,7 +844,7 @@ namespace mcJollibee3
         
         static void Main(string[] args)
         {
-            notice_fullscreen();
+            notice_startup();
             welcomeScreen();
             accept_transaction = true; 
             while (accept_transaction == true) {
