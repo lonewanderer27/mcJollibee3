@@ -899,7 +899,7 @@ namespace mcJollibee3
                     {
                         if (subtotalPrice != 0)
                         {
-                            error(5, 25, errorMessage: "You still have unpaid orders, are you sure you're leave? [Y/N]");
+                            error(5, 25, errorMessage: "You still have unpaid orders, are you sure you're going to leave? [Y/N]");
                             /*
                              * pwede din pala ang ginagawa ko sa python hahaha
                              * 
