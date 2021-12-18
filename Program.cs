@@ -600,11 +600,7 @@ namespace mcJollibee3
 
                 customerChange = getChange(customerMoney);
 
-                if (customerChange == 0)
-                {
-                    break;
-                }
-                else if (customerChange < 0)
+                if (customerChange < 0)
                 {
                     customerChange = 0;
                     customerMoney = 0;
@@ -618,7 +614,7 @@ namespace mcJollibee3
                         break;
                     }
                 }
-                else
+                else if (customerChange >= 0)
                 {
                     display_paymentScreen();
                     
@@ -626,7 +622,7 @@ namespace mcJollibee3
                     Console.ReadLine();
                     
                     Console.SetCursorPosition(5, 25);
-                    Console.Write("Type 'q' to quit, otherwise 'n' if there is another customer: ");
+                    Console.Write("Type 'q' to quit, 'o' to order again, or 'nc' if there is another customer: ");
                     paymentSuccess = true;
 
                     String userChoiceExit = typeChoice();
@@ -639,6 +635,10 @@ namespace mcJollibee3
                     else if (userChoiceExit == "n")
                     {
                         newCustomer();
+                    }
+                    else if (userChoiceExit == "o")
+                    {
+                        newOrder();
                     }
                 }
                 paymentExecution++;
@@ -662,6 +662,25 @@ namespace mcJollibee3
             customerMoney = 0;
             customerChange = 0;
             currentUser = "Customer";
+            userChoice = "";
+        }
+
+
+        static void newOrder()
+        {
+            int counter;
+            for (counter = 0; counter < 5; counter++)
+            {
+                totalItemPrices[counter] = 0;
+                orderQuantities[counter] = 0;
+                
+            }
+            totalQty = 0;
+            vat = 0;
+            subtotalPrice = 0;
+            totalPrice = 0;
+            customerMoney = 0;
+            customerChange = 0;
             userChoice = "";
         }
         
