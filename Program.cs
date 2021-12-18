@@ -358,7 +358,7 @@ namespace mcJollibee3
         
         
         static Double typeDouble(String message = "") {
-            int verified_typeDouble_input;
+            Double verified_typeDouble_input;
             String userDouble;
             bool success_typeDouble;
 
@@ -380,7 +380,7 @@ namespace mcJollibee3
                     
                 userDouble = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.White;
-                success_typeDouble = Int32.TryParse(userDouble, out verified_typeDouble_input);
+                success_typeDouble = Double.TryParse(userDouble, out verified_typeDouble_input);
                 if (success_typeDouble) {
                     return verified_typeDouble_input;
                 }
@@ -483,8 +483,13 @@ namespace mcJollibee3
             String displayItemCode, displayItemName;
 
             Random random = new Random();
-            displayAmount = random.Next(1, 10);
-            random_item = random.Next(0, 4);
+            displayAmount = random.Next(1, 11);
+            random_item = random.Next(0, 5);
+            /*
+             * random.Next only outputs number from the first param number up to except the second param number
+             * So random.Next(0, 5) will only output numbers 0, 1, 2, 3, 4 but not 5 
+             * like how random.int works in python...
+            */
             displayItemCode = itemCodes[random_item];
             displayItemName = itemNames[random_item];
             Console.SetCursorPosition(5, 26);
@@ -573,8 +578,13 @@ namespace mcJollibee3
             String displayItemCode, displayItemName;
 
             Random random = new Random();
-            displayAmount = random.Next(1, 10);
-            random_item = random.Next(0, 4);
+            displayAmount = random.Next(1, 11);
+            random_item = random.Next(0, 5);
+            /*
+             * random.Next only outputs number from the first param number up to except the second param number
+             * So random.Next(0, 5) will only output numbers 0, 1, 2, 3, 4 but not 5 
+             * like how random.int works in python...
+            */
             displayItemCode = itemCodes[random_item];
             displayItemName = itemNames[random_item];
             Console.SetCursorPosition(5, 26);
@@ -632,7 +642,7 @@ namespace mcJollibee3
                     {
                         accept_transaction = false;
                     }
-                    else if (userChoiceExit == "n")
+                    else if (userChoiceExit == "nc")
                     {
                         newCustomer();
                     }
@@ -648,21 +658,8 @@ namespace mcJollibee3
         
         
         static void newCustomer() {
-            int counter;
-            for (counter = 0; counter < 5; counter++)
-            {
-                totalItemPrices[counter] = 0;
-                orderQuantities[counter] = 0;
-                
-            }
-            totalQty = 0;
-            vat = 0;
-            subtotalPrice = 0;
-            totalPrice = 0;
-            customerMoney = 0;
-            customerChange = 0;
             currentUser = "Customer";
-            userChoice = "";
+            newOrder();
         }
 
 
@@ -782,10 +779,9 @@ namespace mcJollibee3
 
                     case 2:
                     {
-                        if (totalPrice == 0)
+                        if (subtotalPrice == 0)
                         {
-                            error(5, 35, errorMessage: "You have ordered nothing, please do so by entering '1', then come back here.");
-                            Console.ReadLine();
+                            error(5, 35, errorMessage: "You have ordered nothing, please do so by typing '1' then press enter.");
                         }
                         else
                         {
@@ -797,10 +793,9 @@ namespace mcJollibee3
 
                     case 3:
                     {
-                        if (totalPrice == 0)
+                        if (subtotalPrice == 0)
                         {
-                            error(5, 35, errorMessage: "You have ordered nothing, please do so by entering '1', then come back here.");
-                            Console.ReadLine();
+                            error(5, 35, errorMessage: "You have ordered nothing, please do so by typing '1' then press enter.");
                         }
                         else
                         {
