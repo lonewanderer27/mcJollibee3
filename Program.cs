@@ -902,12 +902,13 @@ namespace mcJollibee3
                             error(5, 25, errorMessage: "You still have unpaid orders, are you sure you're leave? [Y/N]");
                             /*
                              * pwede din pala ang ginagawa ko sa python hahaha
-                             * here im using typeChoice to get choice input from the user and then pipe it to ToLower() so it'll turn into lowercase
-                             * the logical choice is to put it into typeChoice function directly but that handles a lot more than Y/N
-                             * it would complicate the code because what if the typeChoice encounters a number, i'll lower it pa diba hahaha
-                             * so it'll be here in the meantime
-                             *
-                             * i wish there is a library that handles this or a shortcut of TryParse instead...
+                             * 
+                             * here im using typeChoice to get choice input from the user and then pipe it to ToLower() so it'll turn into lowercase,
+                             * then finally it will be assigned to userChoice
+                             * 
+                             * the most logical choice is to put it into typeChoice function directly but that handles a lot more than Y/N
+                             * it would complicate the code because what if the typeChoice encounters a number, i'll still have to make a condition for that
+                             * so this ToLower() will be here in the meantime
                              */
                             userChoice = typeChoice().ToLower();
                             if (userChoice == "y")
