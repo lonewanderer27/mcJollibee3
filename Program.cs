@@ -646,7 +646,11 @@ namespace mcJollibee3
                     {
                         newCustomer();
                     }
-                    else if (userChoiceExit == "o")
+                    else if (userChoiceExit == "o")     //just put this unneeded condition here for readability purpose
+                    {
+                        newOrder();
+                    }
+                    else
                     {
                         newOrder();
                     }
