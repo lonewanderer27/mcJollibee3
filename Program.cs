@@ -679,7 +679,7 @@ namespace mcJollibee3
                 display_paymentScreen();
 
                 Console.SetCursorPosition(5, 25);
-                Console.Write("Please type in your money");
+                Console.Write("Please enter your money");
                 Console.SetCursorPosition(5, 27);
                 customerMoney = typeDouble("₱ ");
 
@@ -692,7 +692,7 @@ namespace mcJollibee3
                     error(5, 35, "Payment insufficient, please try again...");
                     Console.ReadLine();
 
-                    if (paymentExecution < 3)
+                    if (paymentExecution == 3)
                     {
                         success(5, 35, "You might want to cancel some orders to proceed... going back to Main Menu.");
                         Console.ReadLine();
