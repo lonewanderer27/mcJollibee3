@@ -841,7 +841,7 @@ namespace mcJollibee3
         {
             Console.Clear();
             Console.SetCursorPosition(5,0);
-            //Displays the template of the main screen which contains the menu list and current receipt.
+            //Displays the template of the payment screen which contains the current receipt.
             Console.Write(paymentScreen);
             //Overlays the values of receipt on top of the payment screen's template.
             computeOrders();
