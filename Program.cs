@@ -135,7 +135,7 @@ namespace mcJollibee3
             It can also take a custom message via errorMessage parameter, otherwise it displays the default message.
             */
             Console.SetCursorPosition(col, row);
-            Console.Write("                                                                           ");   //clears whatever the user typed in before
+            Console.Write("                                                                           ");   //clears the previous success or error message
             Console.SetCursorPosition(col, row);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(errorMessage);
@@ -151,7 +151,7 @@ namespace mcJollibee3
             It can also take a custom message via successMessage parameter, otherwise it displays the default message.
             */
             Console.SetCursorPosition(col, row);
-            Console.Write("                                                                           ");   //clears whatever the user typed in before
+            Console.Write("                                                                           ");   //clears the previous success or error message
             Console.SetCursorPosition(col, row);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(successMessage);
