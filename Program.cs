@@ -207,6 +207,17 @@ namespace mcJollibee3
         }
         
         
+        
+        //computes the change then returns it..
+        static Double getChange(Double customerMoney)
+        {
+            Double change = customerMoney - totalPrice;
+            return change;
+        }
+        
+        
+        
+        //runs all the order computations
         static void computeOrders()
         {
             computetotalQty();
@@ -217,9 +228,12 @@ namespace mcJollibee3
         }
         
         
+        
+        /*
+         * Displays the value of items in Orders
+         * It can also be used to display the receipt by calling it with displayReceipt param set to true.
+         */
         static void displayOrders(bool displayReceipt = false) {
-            //Displays the contents of orders
-            //It can also be used to display the final receipt by calling it with a custom row parameter number.
 
             int difference = 0,
                 row_orderQuantities = 20,
@@ -284,6 +298,7 @@ namespace mcJollibee3
             Console.Write(subtotalPrice);
 
             
+            //this part will only work if displayOrder() is called with displayReceipt param set to true
             if (displayReceipt == true)
             {
                 //Displays the VAT
@@ -306,8 +321,7 @@ namespace mcJollibee3
 
 
 
-        
-
+        //gets an input choice from the customer. ex: 1, 2, 3, 4...
         static String typeChoice(String errorMessage="Error. Please try again.", bool errorEnable = true) {
             int run  = 1;            
             userChoice = " ";    //not overriding this causes it to take the previous 
@@ -331,6 +345,7 @@ namespace mcJollibee3
 
         
         
+        //gets a integer from the user and then it verifies using verifyNum() if the input is valid
         static int typeNum() {
             int verified_typeNum_input = 0;
             int[] verified_int_array = new int[2];
@@ -385,35 +400,10 @@ namespace mcJollibee3
 
             return verified_int_array;
         }
-        
-        
-        
-        /*
-        verifies if the string can be converted to Double
-        returns the verified_Double array with 2 numbers
-        [0] - contains the number if the conversion is successful
-        [1] - contains the response, 0 - unsuccessful / 1 - successful
-        */
-        static Double[] verify_Double(String num)
-        {
-            Double[] verified_Double_array = new Double[2];
-            bool success_convert_Double;
-            success_convert_Double = Double.TryParse(num, out verified_Double_array[0]);
-            if (success_convert_Double)
-            {
-                verified_Double_array[1] = 1;
-            }
-            else
-            {
-                verified_Double_array[0] = 0;
-                verified_Double_array[1] = 0;
-            }
 
-            return verified_Double_array;
-        }
-        
-        
-        
+
+
+        //gets a Double from the user and then it verifies using verifyDouble() if the input is valid
         static Double typeDouble(String message = "") {
             Double verified_typeDouble_input = 0;
             Double[] verified_Double_array = new Double[2];
@@ -451,17 +441,36 @@ namespace mcJollibee3
 
             return verified_typeDouble_input;
         }
-
-
-
-        static Double getChange(Double customerMoney)
+        
+        
+        
+        /*
+        verifies if the string can be converted to Double
+        returns the verified_Double array with 2 numbers
+        [0] - contains the number if the conversion is successful
+        [1] - contains the response, 0 - unsuccessful / 1 - successful
+        */
+        static Double[] verify_Double(String num)
         {
-            Double change = customerMoney - totalPrice;
-            return change;
+            Double[] verified_Double_array = new Double[2];
+            bool success_convert_Double;
+            success_convert_Double = Double.TryParse(num, out verified_Double_array[0]);
+            if (success_convert_Double)
+            {
+                verified_Double_array[1] = 1;
+            }
+            else
+            {
+                verified_Double_array[0] = 0;
+                verified_Double_array[1] = 0;
+            }
+
+            return verified_Double_array;
         }
 
 
 
+        //splits a string using a separator: ", " 
         static string[] splitString(String str) {
             String[] spearator = { ", " };
             String[] strlist = str.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
@@ -544,6 +553,7 @@ namespace mcJollibee3
         }
         
         
+        //provides the help message to the customer on how to order
         static void help_addOrder() {
             //Displays an instruction on how to add orders
             int displayAmount, random_item;
@@ -647,6 +657,7 @@ namespace mcJollibee3
         }
 
         
+        //provides the help message to the customer on how to cancel their orders
         static void help_cancelOrder() {
             //Displays an instruction on how to cancel orders
             int displayAmount, random_item;
@@ -734,6 +745,8 @@ namespace mcJollibee3
             } while (paymentSuccess == false);
         }
 
+        
+        
         static void exit()
         {
             accept_transaction = false;
@@ -747,6 +760,7 @@ namespace mcJollibee3
             currentUser = "Customer";
             newOrder();
         }
+
 
 
         static void newOrder()
@@ -784,6 +798,8 @@ namespace mcJollibee3
             Console.ReadLine();
         }
         
+        
+        
         static void getcurrentUser()
         {
             int run = 1;
@@ -798,6 +814,8 @@ namespace mcJollibee3
                 run++;
             }
         }
+        
+        
         
         static void welcomeScreen() 
         {
@@ -818,6 +836,7 @@ namespace mcJollibee3
         }
 
 
+
         static void display_paymentScreen()
         {
             Console.Clear();
@@ -828,6 +847,7 @@ namespace mcJollibee3
             computeOrders();
             displayOrders(displayReceipt:true);
         }
+
 
 
         static void display_mainScreen() 
@@ -841,6 +861,7 @@ namespace mcJollibee3
             displayOrders();
         }
 
+        
         
         static void Main(string[] args)
         {
